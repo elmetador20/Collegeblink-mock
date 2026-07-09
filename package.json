@@ -2,13 +2,14 @@
   "name": "collegeblink",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "add-admin": "tsx scripts/add-admin.ts"
-  },
+ "scripts": {
+  "dev": "next dev",
+  "build": "next build",
+  "start": "next start",
+  "lint": "next lint",
+  "add-admin": "tsx scripts/add-admin.ts",
+  "postinstall": "prisma generate"
+},
   "dependencies": {
     "@ai-sdk/react": "^3.0.161",
     "@dnd-kit/core": "^6.1.0",
