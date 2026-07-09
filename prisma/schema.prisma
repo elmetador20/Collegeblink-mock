@@ -1,0 +1,554 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String    @id @default(cuid())
+  email            String    @unique
+  name             String?
+  avatar           String?
+  role             String    @default("USER")
+  plan             String    @default("FREE")
+  emailVerified    DateTime?
+  stream           String?
+  targetYear       Int?
+  city             String?
+  state            String?
+  board            String?
+  percentage       Float?
+  jeemainsRank     Int?
+  jeeadvancedRank  Int?
+  neetRank         Int?
+  catPercentile    Float?
+  cuetScore        Float?
+  category         String?
+  familyIncome     Float?
+  preferredCities  Json?     // Array of strings
+  preferredStreams Json?     // Array of strings
+  budgetRange      Float?
+  password         String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  oauthAccounts    OAuthAccount[]
+  applications     Application[]
+  savedColleges    SavedCollege[]
+  reviews          CollegeReview[]
+  forumPosts       ForumPost[]
+  forumAnswers     ForumAnswer[]
+  forumVotes       ForumVote[]
+  notifications    Notification[]
+  aiSessions       AiSession[]
+  documents        Document[]
+  subscriptions    Subscription[]
+  alumni           Alumni[]
+}
+
+model OAuthAccount {
+  id                String   @id @default(cuid())
+  userId            String
+  provider          String
+  providerAccountId String
+  email             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model College {
+  id             String   @id @default(cuid())
+  name           String
+  slug           String   @unique
+  logo           String?
+  coverImage     String?
+  city           String
+  state          String
+  country        String?
+  type           String
+  established    Int?
+  nirfRank       Int?
+  naacRating     String?
+  accreditation  Json?    // Array of strings
+  website        String?
+  latitude       Float?
+  longitude      Float?
+  description    String?  @db.Text
+  about          String?  @db.Text
+  facilities     Json?    // Array of strings
+  highlights     Json?    // Array of strings
+  entranceExams  Json?    // Array of strings
+  avgPackage     Float?
+  highestPackage Float?
+  tuitionFees    Float?
+  totalFees      Float?
+  seats          Int?
+  placementRate  Float?
+  campusSize     String?
+  tags           Json?    // Array of strings
+  verified       Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  courses        CourseCollege[]
+  cutoffs        Cutoff[]
+  placements     Placement[]
+  recruiters     Recruiter[]
+  galleryImages  GalleryImage[]
+  applications   Application[]
+  savedBy        SavedCollege[]
+  reviews        CollegeReview[]
+  alumni         Alumni[]
+
+  @@index([state])
+  @@index([type])
+}
+
+model Course {
+  id              String   @id @default(cuid())
+  name            String
+  degree          String
+  duration        Float
+  description     String?  @db.Text
+  careerProspects Json?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  colleges        CourseCollege[]
+  cutoffs         Cutoff[]
+}
+
+model CourseCollege {
+  collegeId       String
+  courseId        String
+
+  fees            Float
+  totalSeats      Int
+  availableSeats  Int?
+  eligibility     String?  @db.Text
+
+  college         College @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+  course          Course  @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@id([collegeId, courseId])
+}
+
+model Cutoff {
+  id          String   @id @default(cuid())
+  collegeId   String
+  courseId    String?
+  year        Int
+  examType    String
+  category    String
+  openingRank Int
+  closingRank Int
+  createdAt   DateTime @default(now())
+
+  college     College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+  course      Course?  @relation(fields: [courseId], references: [id], onDelete: SetNull)
+
+  @@index([collegeId])
+  @@index([courseId])
+}
+
+model Placement {
+  id             String   @id @default(cuid())
+  collegeId      String
+  year           Int
+  avgPackage     Float
+  highestPackage Float
+  medianPackage  Float?
+  placementRate  Float
+  totalStudents  Int
+  placedStudents Int
+  createdAt      DateTime @default(now())
+
+  college        College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+
+  @@index([collegeId])
+}
+
+model Recruiter {
+  id        String   @id @default(cuid())
+  collegeId String
+  name      String
+  logo      String?
+  industry  String?
+  tier      String?
+  createdAt DateTime @default(now())
+
+  college   College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+
+  @@index([collegeId])
+}
+
+model GalleryImage {
+  id        String   @id @default(cuid())
+  collegeId String
+  url       String
+  caption   String?
+  category  String?
+  createdAt DateTime @default(now())
+
+  college   College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+
+  @@index([collegeId])
+}
+
+model Application {
+  id        String    @id @default(cuid())
+  userId    String
+  collegeId String
+  courseId  String?
+  status    String    @default("PENDING")
+  appliedAt DateTime?
+  deadline  DateTime?
+  documents Json?
+  notes     String?   @db.Text
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  college   College   @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, collegeId, courseId])
+  @@index([userId])
+  @@index([collegeId])
+}
+
+model SavedCollege {
+  id        String   @id @default(cuid())
+  userId    String
+  collegeId String
+  savedAt   DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  college   College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, collegeId])
+  @@index([userId])
+  @@index([collegeId])
+}
+
+model CollegeReview {
+  id              String   @id @default(cuid())
+  userId          String
+  collegeId       String
+  rating          Float
+  title           String
+  body            String   @db.Text
+  pros            Json?    // Array of strings
+  cons            Json?    // Array of strings
+  batch           Int?
+  course          String?
+  placementRating Float?
+  facultyRating   Float?
+  campusRating    Float?
+  helpful         Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  college         College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, collegeId])
+  @@index([collegeId])
+  @@index([userId])
+}
+
+model Scholarship {
+  id               String    @id @default(cuid())
+  name             String
+  title            String?
+  provider         String
+  providerLogo     String?
+  amount           String
+  type             String
+  eligibility      Json?
+  deadline         String?
+  applicationLink  String?
+  applyLink        String?
+  description      String    @db.Text
+  documents        Json?     // Array of strings
+  renewable        Boolean   @default(false)
+  stateSpecific    String?
+  categorySpecific String?
+  examSpecific     String?
+  minPercentage    Float?
+  familyIncomeMax  Float?
+  level            String?
+  location         String?
+  tags             Json?     // Array of strings
+  category         String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@index([type])
+  @@index([level])
+  @@index([location])
+  @@index([category])
+}
+
+model ForumPost {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  body      String   @db.Text
+  tags      Json?    // Array of strings
+  upvotes   Int      @default(0)
+  downvotes Int      @default(0)
+  views     Int      @default(0)
+  isPinned  Boolean  @default(false)
+  isLocked  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  answers   ForumAnswer[]
+  votes     ForumVote[]
+
+  @@index([userId])
+}
+
+model ForumAnswer {
+  id         String   @id @default(cuid())
+  postId     String
+  userId     String
+  body       String   @db.Text
+  upvotes    Int      @default(0)
+  downvotes  Int      @default(0)
+  isAccepted Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  post       ForumPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  votes      ForumVote[]
+
+  @@index([postId])
+  @@index([userId])
+}
+
+model ForumVote {
+  id        String   @id @default(cuid())
+  userId    String
+  postId    String?
+  answerId  String?
+  type      String
+  createdAt DateTime @default(now())
+
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post      ForumPost?   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  answer    ForumAnswer? @relation(fields: [answerId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, postId])
+  @@unique([userId, answerId])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  title     String
+  body      String   @db.Text
+  read      Boolean  @default(false)
+  link      String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model AiSession {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  title     String?
+  messages  Json?    // Array of chat messages
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Document {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  url       String
+  type      String
+  size      Int
+  mimeType  String
+  collegeId String?
+  tags      Json?    // Array of strings
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Subscription {
+  id                   String    @id @default(cuid())
+  userId               String
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+  stripePriceId        String?
+  status               String
+  currentPeriodStart   DateTime?
+  currentPeriodEnd     DateTime?
+  cancelAtPeriodEnd    Boolean   @default(false)
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  user                 User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([stripeCustomerId])
+  @@index([stripeSubscriptionId])
+}
+
+model AiConfig {
+  id              String   @id @default(cuid())
+  roiWeight       Float
+  locationWeight  Float
+  placementWeight Float
+  feesWeight      Float
+  matchThreshold  Float
+  learningRate    Float
+  batchSize       Int
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Alumni {
+  id             String   @id @default(cuid())
+  userId         String
+  collegeId      String
+  course         String
+  batch          Int
+  currentRole    String?
+  currentCompany String?
+  linkedInUrl    String?
+  isAvailable    Boolean  @default(true)
+  bio            String?  @db.Text
+  expertise      Json?    // Array of strings
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  college        College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, collegeId])
+  @@index([userId])
+  @@index([collegeId])
+}
+
+model AnalyticsEvent {
+  id        String   @id @default(cuid())
+  userId    String?
+  event     String
+  metadata  Json?
+  timestamp DateTime @default(now())
+
+  @@index([userId])
+  @@index([event])
+  @@index([timestamp])
+}
+
+model CounsellingLead {
+  id            String   @id @default(cuid())
+  name          String
+  phone         String
+  exam          String?
+  targetCollege String?
+  targetStream  String?
+  status        String   @default("NEW")
+  notes         String?  @db.Text
+  sourcePage    String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+model SystemSettings {
+  id                 String   @id @default(cuid())
+  maintenanceMode    Boolean  @default(false)
+  maintenanceMessage String   @db.Text
+  maintenanceEta     DateTime?
+  contactEmail       String
+  updatedAt          DateTime @updatedAt
+}
+
+model MaintenanceLog {
+  id        String   @id @default(cuid())
+  userId    String
+  action    String
+  timestamp DateTime @default(now())
+
+  @@index([timestamp])
+}
+
+model ClientSession {
+  id          String   @id @default(cuid())
+  userId      String
+  ip          String?
+  userAgent   String?
+  fingerprint String?
+  expiresAt   DateTime
+  lastUsedAt  DateTime
+  isValid     Boolean  @default(true)
+  metadata    Json?
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@index([isValid])
+}
+
+model StudentInquiry {
+  id           String   @id @default(cuid())
+  name         String
+  email        String
+  phone        String
+  state        String
+  city         String
+  category     String
+  course       String
+  onlineCourse Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  @@index([email])
+  @@index([createdAt])
+}
+
+model BlogPost {
+  id           String   @id @default(cuid())
+  title        String
+  slug         String   @unique
+  content      String   @db.Text
+  summary      String   @db.Text
+  image        String
+  category     String
+  readTime     String   @default("5 min read")
+  published    Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([slug])
+  @@index([createdAt])
+}

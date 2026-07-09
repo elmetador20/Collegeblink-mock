@@ -1,0 +1,1 @@
+export { CollegeForm } from "./colleges/college-form/CollegeForm";

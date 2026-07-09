@@ -1,0 +1,53 @@
+[
+  {
+    "id": "college-selection",
+    "question": "What factors matter most when choosing a college?",
+    "answer": "Key factors include **accreditation and rankings**, **placement records**, **fee structure and scholarships**, **faculty quality**, **infrastructure and campus life**, and **location**. Weighing these together usually gives a clearer picture than focusing on rank or brand name alone.",
+    "followUps": [
+      {
+        "id": "college-selection-rankings",
+        "question": "What do college rankings like NIRF actually measure?",
+        "answer": "Rankings such as **NIRF** evaluate colleges on parameters like **teaching and learning resources**, **research output**, **graduation outcomes**, **outreach and inclusivity**, and **perception** among peers and employers. A high rank generally reflects strong performance across most of these areas, but it's still worth checking individual parameters relevant to your priorities."
+      },
+      {
+        "id": "college-selection-placements",
+        "question": "How should placement records be evaluated?",
+        "answer": "Look beyond the **highest package** advertised — check the **average and median salary**, the **percentage of students placed**, and the **range of companies** that visit. Consistency across multiple years is a better indicator than a single standout figure."
+      }
+    ]
+  },
+  {
+    "id": "jee-counseling",
+    "question": "How does JEE counseling (JoSAA) work?",
+    "answer": "JoSAA counseling involves **online registration**, **choice filling** of branches and colleges, multiple **rounds of seat allotment**, and **document verification** at reporting centers. Seats are allotted based on rank, category, and the choices filled by the candidate.",
+    "followUps": [
+      {
+        "id": "jee-counseling-float-vs-freeze",
+        "question": "What is the difference between 'float' and 'freeze' options?",
+        "answer": "**Freeze** means accepting the allotted seat and exiting further rounds, while **float** means accepting the seat for now while staying in the running for a better option in later rounds. The choice depends on whether the current seat already meets one's preferences."
+      },
+      {
+        "id": "jee-counseling-documents",
+        "question": "What documents are required during counseling?",
+        "answer": "Commonly required documents include **10th and 12th mark sheets**, the **entrance exam scorecard**, **category and income certificates (if applicable)**, **transfer and migration certificates**, **passport-size photographs**, and a valid **ID proof** such as Aadhaar or passport."
+      }
+    ]
+  },
+  {
+    "id": "career-paths",
+    "question": "What career paths are available after 12th grade?",
+    "answer": "Common paths include **engineering**, **medicine**, **commerce and finance**, **design**, **law**, and **the arts and humanities**, among many others. Comparing these by scope, cost, duration, and growth potential can help narrow down the most suitable options.",
+    "followUps": [
+      {
+        "id": "career-paths-emerging-fields",
+        "question": "What are some emerging career fields worth considering?",
+        "answer": "Fields such as **AI and data science**, **UX/product design**, **renewable energy engineering**, **biotechnology**, and **digital marketing** have been growing rapidly and offer strong long-term opportunities across industries."
+      },
+      {
+        "id": "career-paths-aptitude-test",
+        "question": "How can an aptitude test help in choosing a career?",
+        "answer": "An aptitude or psychometric test highlights natural strengths, interests, and working styles. This can turn a broad, overwhelming list of options into a focused shortlist of careers worth exploring further, rather than relying on guesswork alone."
+      }
+    ]
+  }
+]
