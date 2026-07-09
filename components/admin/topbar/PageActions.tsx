@@ -22,8 +22,8 @@ export function PageActions({
   toggling,
 }: PageActionsProps) {
   return (
-    <div className="flex items-center gap-3">
-      {/* Bookmark Trigger */}
+    <div className=" flex items-center gap-3">
+     
       <button
         type="button"
         onClick={toggleBookmark}
@@ -37,7 +37,7 @@ export function PageActions({
         <Bookmark className="h-4.5 w-4.5" fill={isBookmarked ? "currentColor" : "none"} />
       </button>
 
-      {/* Keyboard Shortcuts Trigger Button */}
+      
       <button
         type="button"
         onClick={onShortcutsClick}
@@ -49,7 +49,7 @@ export function PageActions({
 
       <div className="h-6 w-px bg-[#E3DFD6] dark:bg-zinc-800 mx-1" />
 
-      {/* Maintenance system status indicator */}
+
       <div className="flex items-center gap-2 pl-1 bg-[#FAF8F4] dark:bg-zinc-900 px-3 py-1.5 rounded-xl border border-[#E3DFD6] dark:border-zinc-800 shadow-sm">
         <div className="flex items-center gap-1.5">
           {maintenanceMode ? (

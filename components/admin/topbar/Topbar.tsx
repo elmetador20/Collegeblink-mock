@@ -340,9 +340,9 @@ export function Topbar({ onRefresh }: { onRefresh?: () => void }) {
       </div>
 
       {showPalette && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center pt-24 px-4">
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-40 px-4 pb-8">
           <div className="fixed inset-0 bg-[#1C1B19]/35 backdrop-blur-[2px]" onClick={() => setShowPalette(false)} />
-          <div className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-[#E3DFD6] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xl z-10">
+          <div className="relative w-full max-w-lg max-h-[90vh] overflow-hidden rounded-2xl border border-[#E3DFD6] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xl z-10">
             <div className="flex items-center gap-3 border-b border-[#E3DFD6]/60 dark:border-zinc-800/60 px-4 py-3">
               <Search className="h-5 w-5 text-[#6B6660]/60" />
               <input
@@ -408,7 +408,7 @@ export function Topbar({ onRefresh }: { onRefresh?: () => void }) {
       {showShortcuts && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="fixed inset-0 bg-[#1C1B19]/35 backdrop-blur-[2px]" onClick={() => setShowShortcuts(false)} />
-          <div className="relative w-full max-w-md overflow-hidden rounded-2xl border border-[#E3DFD6] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-2xl z-10">
+          <div className="relative w-full max-w-md max-h-[90vh] overflow-hidden rounded-2xl border border-[#E3DFD6] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-2xl z-10">
             <button
               type="button"
               onClick={() => setShowShortcuts(false)}
@@ -424,7 +424,7 @@ export function Topbar({ onRefresh }: { onRefresh?: () => void }) {
               </h3>
             </div>
 
-            <div className="space-y-3.5 max-h-80 overflow-y-auto text-left">
+            <div className="space-y-3.5 max-h-[85vh] overflow-y-auto text-left">
               {[
                 { name: "Command Palette", shortcut: "Ctrl + K / Cmd + K" },
                 { name: "Go to Dashboard", shortcut: "g then d" },
