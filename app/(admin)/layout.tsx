@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
-import { AdminSidebar } from "@/components/admin/admin-sidebar";
-import Topbar from "@/components/admin/Topbar";
+import { AdminSidebar } from "@/components/admin/sidebar/Sidebar";
+import { Topbar } from "@/components/admin/topbar/Topbar";
 import { DEMO_MODE } from "@/lib/demo";
 
 export default async function AdminLayout({
@@ -36,9 +36,9 @@ export default async function AdminLayout({
       <AdminSidebar user={user} />
 
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <Topbar />
+        <Topbar user={user} />
         <main className="flex-1 overflow-auto">
-          <div className="mx-auto max-w-6xl px-6 py-8">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 py-6 sm:py-8 lg:px-6 lg:py-8">
             {children}
           </div>
         </main>

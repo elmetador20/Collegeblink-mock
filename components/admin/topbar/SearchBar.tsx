@@ -9,7 +9,7 @@ interface SearchBarProps {
 
 export function SearchBar({ onClick }: SearchBarProps) {
   return (
-    <div className="relative w-[340px]">
+    <div className="relative w-full max-w-[340px]">
       <button
         type="button"
         onClick={onClick}
